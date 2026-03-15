@@ -1,8 +1,23 @@
-const AddJobModal = ({ isOpen, onClose }) => {
+import { useState } from "react";
+
+const AddJobModal = ({ isOpen, onClose, onAdd }) => {
   if (!isOpen) return null;
+
+  const [companyName, setCompanyName] = useState("");
+  const [jobRole, setJobRole] = useState("");
+  const [date, setDate] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newJob = {
+      company: companyName,
+      role: jobRole,
+      date: date,
+      status: "Pending",
+    };
+    onAdd(newJob);
+    setCompanyName("");
+    setJobRole("");
     onClose();
   };
 
@@ -19,8 +34,31 @@ const AddJobModal = ({ isOpen, onClose }) => {
           <div>
             <label className="block text-sm text-slate-400 mb-1">Company</label>
             <input
+              required
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
               className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"
               placeholder="e.g. Google"
+            />
+            <div>
+              <label className="block text-slate-400 text-sm mb-1">Role</label>
+              <input
+                type="text"
+                placeholder="e.g. Frontend Developer"
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white outline-none focus:border-blue-500"
+                onChange={(e) => setJobRole(e.target.value)}
+              />
+            </div>
+            <label className="block text-sm text-slate-400 mb-1">
+              Date Applied
+            </label>
+            <input
+              required
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
+              placeholder={new Date().toISOString().split("T")[0]}
             />
           </div>
 
