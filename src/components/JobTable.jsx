@@ -1,4 +1,4 @@
-const JobTable = ({ jobs, onStatusChange }) => {
+const JobTable = ({ jobs, onStatusChange, onDelete }) => {
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mt-6">
       <table className="w-full text-left border-collapse">
@@ -8,6 +8,7 @@ const JobTable = ({ jobs, onStatusChange }) => {
             <th className="p-4">Role</th>
             <th className="p-4">Date</th>
             <th className="p-4 text-right">Status</th>
+            {onDelete && <th className="p-4 text-center">Actions</th>}
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-700">
@@ -29,7 +30,12 @@ const JobTable = ({ jobs, onStatusChange }) => {
                   <option value="Interview">Interview</option>
                   <option value="Rejected">Rejected</option>
                 </select>
-              </td>
+                </td>
+              {onDelete && (<td className="text-center">
+                <button onClick={()=>onDelete(job.id)} 
+                  className="text-red-500 hover:text-red-400 font-semibold text-sm transition-colors">Delete</button>
+              </td>)}  
+              
             </tr>
           ))}
         </tbody>

@@ -1,4 +1,5 @@
-const Navbar = () => {
+import { NavLink } from "react-router-dom";
+const Navbar = ({setIsModalOpen}) => {
   return (
     
     <nav className="flex justify-between items-center bg-slate-800 p-4 px-8 text-white shadow-2xl border-b border-slate-700">
@@ -10,10 +11,27 @@ const Navbar = () => {
       </div>
 
       <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-        <a href="#" className="hover:text-blue-400 transition-colors">Dashboard</a>
-        <a href="#" className="hover:text-blue-400 transition-colors">My Applications</a>
+        <NavLink 
+  to="/" 
+  className={({ isActive }) => 
+    isActive ? "text-blue-400 font-bold" : "hover:text-blue-400 transition-colors text-slate-400"
+  }
+>
+  Dashboard
+</NavLink>
+
+<NavLink 
+  to="/applications" 
+  className={({ isActive }) => 
+    isActive ? "text-blue-400 font-bold" : "hover:text-blue-400 transition-colors text-slate-400"
+  }
+>
+  My Applications
+</NavLink>
         
-        <button className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-full font-semibold transition-all shadow-lg active:scale-95">
+        <button className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-full font-semibold transition-all shadow-lg active:scale-95"
+        onClick={() => setIsModalOpen(true)}
+        >
           + New Job
         </button>
       </div>

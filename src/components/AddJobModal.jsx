@@ -57,6 +57,7 @@ const AddJobModal = ({ isOpen, onClose, onAdd }) => {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+              max={new Date().toISOString().split('T')[0]}
               className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
               placeholder={new Date().toISOString().split("T")[0]}
             />

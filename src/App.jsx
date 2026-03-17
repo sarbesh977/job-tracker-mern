@@ -3,6 +3,7 @@ import StatCard from "./components/StatCards";
 import JobTable from "./components/JobTable";
 import AddJobModal from "./components/AddJobModal";
 import { useState } from "react";
+import { BrowserRouter,Routes, Route } from "react-router-dom";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,9 +38,17 @@ function App() {
     });
     setJobs(updatedJobs);
   };
+  const deleteJob=(id)=>{
+    const isconfirmed=window.confirm("Are you sure you want to delete this job?");
+    if(isconfirmed){
+    setJobs(jobs.filter((job) => job.id !==id));
+    }
+  };
   return (
+    <BrowserRouter>
     <div className="min-h-screen bg-slate-900 font-sans">
-      <Navbar />
+      <Navbar setIsModalOpen={setIsModalOpen} />
+      
       <AddJobModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -47,6 +56,9 @@ function App() {
       />
 
       <main className="max-w-7xl mx-auto p-6">
+        <Routes>
+          <Route path="/" element={
+            <>
         <header className="mb-8">
           <h2 className="text-3xl font-bold text-white">Dashboard</h2>
           <p className="text-slate-400">
@@ -84,6 +96,15 @@ function App() {
           </h3>
           <JobTable jobs={jobs} onStatusChange={handleStatusChange} />
         </section>
+          </>
+        }/>
+        <Route path={"/applications"} element={
+          <section>
+            <h2 className="text-2xl text-white font-bold mb-4">My Applications</h2>
+            <JobTable jobs={jobs} onStatusChange={handleStatusChange} onDelete={deleteJob}/>
+          </section>
+        }/>
+        </Routes>
         <div className="p-4 border-t border-slate-700/50 text-center">
           <p className="text-xs text-slate-500 uppercase tracking-widest font-medium">
             Made with ⚡ by <span className="text-blue-500">Sarbesh</span>
@@ -91,6 +112,7 @@ function App() {
         </div>
       </main>
     </div>
+    </BrowserRouter>
   );
 }
 
