@@ -2,28 +2,25 @@ import Navbar from "./components/Navbar";
 import StatCard from "./components/StatCards";
 import JobTable from "./components/JobTable";
 import AddJobModal from "./components/AddJobModal";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { BrowserRouter,Routes, Route } from "react-router-dom";
+
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [jobs, setJobs] = useState([
-    {
-      id: 1,
-      company: "Google",
-      role: "Frontend Developer",
-      date: "2026-03-10",
-      status: "Interview",
-    },
-    {
-      id: 2,
-      company: "Amazon",
-      role: "Junior Dev",
-      date: "2026-03-12",
-      status: "Pending",
-    },
-  ]);
+  const [jobs, setJobs]= useState(()=>{
+    const savedJobs= localStorage.getItem('JobList');
+    savedJobs? JSON.parse(savedJobs):[
+      { id: 1, company: "Google", role: "Frontend Developer", date: "2026-03-10", status: "Interview" },
+      { id: 2, company: "Amazon", role: "Junior Dev", date: "2026-03-12", status: "Pending" },
+    ]
+  });
+
+  useEffect(()=>{
+    localStorage.setItem('JobList', JSON.stringify(jobs));
+  },[jobs]);
+
   const addJob = (newJob) => {
     newJob.id = Date.now();
     const updatedList = [newJob, ...jobs];
