@@ -9,9 +9,10 @@ import { BrowserRouter,Routes, Route } from "react-router-dom";
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const[filterStatus, setFilterStatus]=useState("All");
   const [jobs, setJobs]= useState(()=>{
     const savedJobs= localStorage.getItem('JobList');
-    savedJobs? JSON.parse(savedJobs):[
+    return savedJobs? JSON.parse(savedJobs):[
       { id: 1, company: "Google", role: "Frontend Developer", date: "2026-03-10", status: "Interview" },
       { id: 2, company: "Amazon", role: "Junior Dev", date: "2026-03-12", status: "Pending" },
     ]
@@ -98,7 +99,17 @@ function App() {
         <Route path={"/applications"} element={
           <section>
             <h2 className="text-2xl text-white font-bold mb-4">My Applications</h2>
-            <JobTable jobs={jobs} onStatusChange={handleStatusChange} onDelete={deleteJob}/>
+            <label className="text-sm text-slate-400">Filter By:</label>
+            <select 
+            value={filterStatus}
+            onChange={(e)=> setFilterStatus(e.target.value)}
+            className="bg-slate-800 border border-slate-700 text-white rounded-md px-3 py-1.5 outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>All</option>
+              <option>Interview</option>
+              <option>Pending</option>
+            </select>
+            <JobTable jobs={jobs.filter((j)=>filterStatus==="All"|| j.status===filterStatus)} onStatusChange={handleStatusChange} onDelete={deleteJob}/>
           </section>
         }/>
         </Routes>
