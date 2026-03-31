@@ -4,11 +4,14 @@ const app= express();
 
 app.use(express.json());
 
-const authRouter = require('./routes/authRoutes');
+const authenticateUser = require('./middleware/authentication');
+const authRouter = require('./routes/authRoutes.js');
+const jobsRouter = require('./routes/jobsRoutes.js');
+const connectDB = require('./db/connect.js');
 
 app.use('/api/v1/auth',authRouter);
+app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 
-const connectDB=require('./db/connect.js');
 const port=5000;
 
 const start= async()=>{
